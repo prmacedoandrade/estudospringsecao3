@@ -21,4 +21,8 @@ public interface ClientRepositoy extends JpaRepository<Client,Integer> {
 
     List<Client> findByNameLike(String name);
 
+    @Query(" select c from Client c left join fetch c.carts where c.id =:id ")
+    Client findClientFetchCart(@Param("id") Integer id);
+
+
 }

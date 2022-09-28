@@ -1,7 +1,9 @@
 package br.com.estudo;
 
 
+import br.com.estudo.br.com.estudo.model.Cart;
 import br.com.estudo.br.com.estudo.model.Client;
+import br.com.estudo.br.com.estudo.model.br.com.estudo.repository.CartRepositoy;
 import br.com.estudo.br.com.estudo.model.br.com.estudo.repository.ClientRepositoy;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
@@ -19,6 +23,9 @@ public class VendasApplication {
     @Autowired
     ClientRepositoy clientRepositoy;
 
+    @Autowired
+    CartRepositoy cartRepositoy;
+
     @Bean
     public CommandLineRunner init(){
         return args ->{
@@ -26,20 +33,20 @@ public class VendasApplication {
             Client c = new Client();
             c.setName("Paulo");
 
-            Client c1 = new Client();
-            c1.setName("Renato");
-
             clientRepositoy.save(c);
-            clientRepositoy.save(c1);
 
-            List<Client> listClient = clientRepositoy.findAll();
-            listClient.forEach(System.out::println);
+            Cart cart = new Cart();
+            cart.setClient(c);
+            cart.setValue(BigDecimal.valueOf(100));
+            cart.setCartDate(LocalDate.now());
 
-            clientRepositoy.deleteByNameLike("%Paul%");
+            cartRepositoy.save(cart);
 
-            System.out.println("AFTER DELETE");
+            c = clientRepositoy.findClientFetchCart(c.getId());
 
-            clientRepositoy.findAll().forEach(System.out::println);
+            System.out.println(c);
+
+            System.out.println(c.getCarts());
 
 
         };

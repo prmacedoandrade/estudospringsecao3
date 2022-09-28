@@ -19,7 +19,7 @@ public class Cart {
     @Column(name = "cart_date")
     private LocalDate cartDate;
 
-    @Column(name = "cart_value", length = 20, precision = 2)
+    @Column(name = "cart_value", scale = 2, precision = 20)
     private BigDecimal value;
 
     @OneToMany(mappedBy = "cart")
@@ -55,5 +55,22 @@ public class Cart {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    public Set<ProductCart> getProductCarts() {
+        return productCarts;
+    }
+
+    public void setProductCarts(Set<ProductCart> productCarts) {
+        this.productCarts = productCarts;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", cartDate=" + cartDate +
+                ", value=" + value +
+                '}';
     }
 }
