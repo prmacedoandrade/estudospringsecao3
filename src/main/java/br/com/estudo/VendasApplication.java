@@ -48,6 +48,7 @@ public class VendasApplication {
 
             System.out.println(c.getCarts());
 
+            cartRepositoy.findByClient(c).forEach(System.out::println);
 
         };
     }
